@@ -1,7 +1,10 @@
-FROM golang:1.14.1-alpine3.11
+FROM golang
 
-WORKDIR /go/src/app
+COPY . /go/src/app
 
-COPY . .
+RUN go install app
 
-CMD ["go", "run", "--work", "app.go"]
+FROM scratch
+COPY --from=0 /go/bin/app .
+
+CMD ["./app"]
